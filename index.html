@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mes cours DCG</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box}
+:root{--ink:#3B3322;--bd:#E6DCB8;--hl:#FFE46B;--mut:#7A6D4F}
+body{margin:0;background:#FBF5E3;color:var(--ink);font:16px/1.65 Georgia,serif}
+.w{max-width:960px;margin:0 auto;padding:20px 16px}
+h1,h2,h3{font-style:italic;font-weight:400;margin:.4em 0}
+.hl{background:var(--hl);padding:0 6px}
+button,select,.sn,.tab,.bx,.go,.lv{font-family:system-ui,sans-serif}
+button,select{font-size:13px;border:1px solid var(--bd);background:#fff;border-radius:8px;padding:5px 11px;cursor:pointer;color:var(--ink)}
+button:hover{background:#FFF8D6}
+button:focus-visible,.cd:focus-visible,.tab:focus-visible{outline:2px solid #3F7FCB;outline-offset:2px}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;padding-top:8px}
+.cd{background:#fff;border:1px solid var(--bd);border-radius:4px;padding:16px 14px;position:relative;cursor:pointer}
+.tp{position:absolute;top:-7px;left:50%;margin-left:-24px;width:48px;height:13px;opacity:.9;transform:rotate(-3deg)}
+.ue{display:inline-flex;align-items:center;gap:6px;font:500 12px system-ui;padding:3px 10px 3px 4px;border-radius:99px}
+.ue i{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.paper{background:#fff;border:1px solid var(--bd);border-radius:4px;padding:18px 22px;margin-bottom:16px}
+.tab{padding:5px 16px;border-radius:6px 6px 0 0;background:#EFE6C6;cursor:pointer;font-size:13px}
+.tab.on{background:var(--hl);font-weight:600}
+.bx{font-size:14px;line-height:1.5;border-radius:6px;padding:9px 12px;margin:10px 0;white-space:pre-wrap}
+.bx::before{content:attr(data-l);display:block;font-weight:600;font-size:12px;margin-bottom:2px}
+.ess{background:#FFF8D6;border:1px solid #E8CF5A}.for{background:#fff;border:1.5px solid var(--ink)}.ret{background:#FFF3F5;border:1px solid #FF8FA3}.att{background:#FFE9D6;border:1px solid #F28C4B}
+.p{white-space:pre-wrap}
+.go{display:flex;align-items:center;gap:10px;background:#E6F4D3;border:1px solid #7CC24A;border-radius:6px;padding:10px 12px;font-weight:500;font-size:13px;color:#2B4A12;cursor:pointer;margin-top:14px}
+.lv{font-weight:600;font-size:11px;padding:2px 10px;border-radius:99px}
+.l1{background:#C9E8A8;color:#27500A}.l2{background:#FFE46B;color:#4A3A00}.l3{background:#FFC9D1;color:#5A1626}
+.ex{border:1px solid var(--bd);border-radius:6px;padding:12px;margin:12px 0}
+.cor{display:none;background:#F3F9EC;border-left:4px solid #7CC24A;padding:10px 12px;margin-top:8px;white-space:pre-wrap;font-size:15px}.cor.on{display:block}
+.ed [contenteditable=true]{outline:1px dashed #B9AD86;border-radius:3px;min-height:1.4em}
+.tb{display:none;gap:4px;float:right}.ed .tb{display:flex}
+@media print{.noprint,.tb,.go,button,select{display:none!important}body{background:#fff}.paper{border:0;padding:0}}
+</style></head><body><div id="app"></div>
+<script>
+const API="https://script.google.com/macros/s/AKfycbxuQkvKmn0CsOJ37OERKH0XgA3s2lOmVLBYPc8jfGHUReEsjtLl5uj71Q7IECDR7MBa/exec"; // colle ici l'URL de ton application web Apps Script
+const IC={1:'gavel',2:'scale',3:'users',4:'receipt-tax',5:'building-bank',6:'coin',7:'briefcase',8:'device-desktop',9:'calculator',10:'report-money',11:'chart-line',12:'language',13:'messages'};
+const COL=[['#6BA8E8','#DCEEFF','#0E3A5E'],['#7CC24A','#E6F4D3','#2B4A12'],['#F28C4B','#FFE6D1','#5E2D0A'],['#C77DDB','#F3E1F9','#4A1B5E']];
+const BL={h:'Sous-titre',p:'Paragraphe',ess:"L'essentiel en 30 secondes",for:'Formule',ret:'À retenir',att:'Attention'};
+const LV=['Application','Synthèse',"Cas d'examen"];
+let D={courses:[{ue:11,title:'Contrôle de gestion',ch:[{title:'Le seuil de rentabilité',b:[
+{t:'ess',x:"Au seuil de rentabilité, le résultat est nul. Au-dessus, chaque euro de marge sur coût variable devient du bénéfice."},
+{t:'for',x:"S* = CF / taux de MCV\nQ* = CF / (p − v)\nIS = (CA − S*) / CA ; LO = MCV / résultat = 1 / IS"},
+{t:'ret',x:"Si le CA augmente de 1 %, le résultat augmente de LO %. IS + IP = 1."}],
+ex:[{l:1,t:'Société Flora',q:"Prix 25 €, coût variable 15 €, charges fixes 60 000 €, ventes 8 000 u/an.\n1. MCV unitaire et taux de MCV.\n2. Seuil (Q* et CA*).\n3. Résultat.\n4. Date du seuil.\n5. Marge de sécurité, indice de sécurité, levier.",a:"1. MCV = 25 − 15 = 10 € ; taux = 10 / 25 = 40 %.\n2. Q* = 60 000 / 10 = 6 000 u ; CA* = 6 000 × 25 = 150 000 €.\n3. MCV = 80 000 ; résultat = 80 000 − 60 000 = 20 000 €.\n4. 150 000 / 200 000 × 12 = 9 mois (fin septembre).\n5. MS = 50 000 ; IS = 25 % ; LO = 80 000 / 20 000 = 4 (= 1 / IS)."},
+{l:2,t:'Société Delta',q:"Prix 50 €, variable 30 €, fixes 240 000 €, ventes 14 000 u.\n1. Compte différentiel, seuil, date, marge et indice de sécurité, levier.\n2. Investissement : +30 000 € de fixes, variable ramené à 27 €. Nouveau seuil, résultat, quantité d'indifférence.\n3. Demande N(14 000 ; 2 000) : probabilité d'atteindre le seuil (Φ(1) = 0,8413).",a:"1. MCV unitaire 20 € ; CA 700 000 ; MCV 280 000 ; résultat 40 000. Q* = 12 000 u ; CA* = 600 000 €. Date ≈ 10,29 mois. MS = 100 000 ; IS = 14,29 % ; LO = 7.\n2. MCV = 23 € ; Q* = 270 000 / 23 = 11 739 u ; résultat = 52 000 € (+12 000). Indifférence : 30 000 / 3 = 10 000 u.\n3. P(Q > 12 000) = Φ(1) = 84,13 %."}]}]}]};
+let S={c:null,tab:'c',ed:false};
+const E=s=>String(s).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+const $=s=>document.querySelector(s);
+const ue=c=>{const k=COL[c.ue%4];return `<span class="ue" style="background:${k[1]};color:${k[2]}"><i style="background:${k[0]}" class="ti ti-${IC[c.ue]||'book'}"></i>UE ${c.ue}</span>`};
+const ce=(k,i,j,f)=>`contenteditable="${S.ed}" spellcheck="false" data-k="${k}" data-i="${i}" data-j="${j??''}" data-f="${f||''}"`;
+const tb=(k,i,j)=>`<span class="tb noprint"><button onclick="mv('${k}',${i},${j},-1)" aria-label="Monter">↑</button><button onclick="mv('${k}',${i},${j},1)" aria-label="Descendre">↓</button><button onclick="rm('${k}',${i},${j})" aria-label="Supprimer">✕</button></span>`;
+const C=()=>D.courses[S.c];
+function R(){const a=$('#app');a.className='w'+(S.ed?' ed':'');a.innerHTML=S.c==null?lib():crs()}
+function lib(){return `<h1><span class="hl">Mes cours DCG</span></h1><div class="g">${D.courses.map((c,i)=>{const n=c.ch.reduce((s,x)=>s+x.ex.length,0);return `<div class="cd" tabindex="0" onclick="S.c=${i};S.tab='c';R()"><div class="tp" style="background:${COL[c.ue%4][0]}"></div>${ue(c)}<h3>${E(c.title)}</h3><div class="sn" style="font-size:12px;color:var(--mut)">${c.ch.length} chapitres · ${n} exercices</div></div>`}).join('')}<div class="cd sn" tabindex="0" style="text-align:center;border-style:dashed" onclick="nc()"><i class="ti ti-plus" style="font-size:24px"></i><div>Nouveau cours</div></div></div>`}
+function crs(){const c=C(),T=S.tab=='c';let h=`<div class="bar noprint"><button onclick="S.c=null;S.ed=false;R()"><i class="ti ti-arrow-left"></i> Retour</button>${ue(c)}<b class="sn" style="flex:1">${E(c.title)}</b><span class="tab ${T?'on':''}" tabindex="0" onclick="S.tab='c';R()">Cours</span><span class="tab ${T?'':'on'}" tabindex="0" onclick="S.tab='e';R()">Exercices</span></div><div class="bar noprint"><button onclick="S.ed=!S.ed;R()"><i class="ti ti-edit"></i> ${S.ed?'Terminer':'Modifier'}</button><button onclick="sv()"><i class="ti ti-device-floppy"></i> Enregistrer</button><button onclick="print()"><i class="ti ti-download"></i> Télécharger en PDF</button>${S.ed?'<button onclick="ach()">+ Chapitre</button>':''}</div>`;
+c.ch.forEach((x,i)=>{h+=`<div class="paper" id="ch${i}"><h2><span class="sn" style="font-size:12px;color:var(--mut)">Chap. ${i+1}</span> <span class="hl" ${ce('ct',i)}>${E(x.title)}</span></h2>`;
+if(T){h+=x.b.map((b,j)=>`<div>${tb('b',i,j)}${b.t=='h'?`<h3 ${ce('b',i,j)}>${E(b.x)}</h3>`:b.t=='p'?`<div class="p" ${ce('b',i,j)}>${E(b.x)}</div>`:`<div class="bx ${b.t}" data-l="${BL[b.t]}" ${ce('b',i,j)}>${E(b.x)}</div>`}</div>`).join('');
+if(S.ed)h+=`<select class="noprint" onchange="ab(${i},this.value)"><option value="">+ Ajouter un bloc…</option>${Object.entries(BL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}</select>`;
+h+=`<div class="go noprint" tabindex="0" onclick="ge(${i})"><i class="ti ti-pencil" style="font-size:18px"></i><span style="flex:1">Fin du chapitre : ${x.ex.length} exercice${x.ex.length>1?'s':''} t'attend${x.ex.length>1?'ent':''}</span>Aller aux exercices →</div>`}
+else{h+=x.ex.map((e,j)=>`<div class="ex">${tb('e',i,j)}<span class="lv l${e.l}">Niveau ${e.l} · ${LV[e.l-1]}</span> <b class="sn" ${ce('e',i,j,'t')}>${E(e.t)}</b><div class="p" ${ce('e',i,j,'q')}>${E(e.q)}</div><button class="noprint" style="margin-top:8px" onclick="this.nextElementSibling.classList.toggle('on')">Voir le corrigé</button><div class="cor" ${ce('e',i,j,'a')}>${E(e.a)}</div></div>`).join('');
+if(S.ed)h+=`<select class="noprint" onchange="ae(${i},this.value)"><option value="">+ Ajouter un exercice…</option>${LV.map((v,k)=>`<option value="${k+1}">Niveau ${k+1} · ${v}</option>`).join('')}</select>`}
+h+='</div>'});return h}
+document.addEventListener('input',e=>{const d=e.target.dataset;if(!d.k)return;const v=e.target.innerText,x=C().ch[d.i];if(d.k=='ct')x.title=v;else if(d.k=='b')x.b[d.j].x=v;else if(d.k=='e')x.ex[d.j][d.f]=v});
+const arr=(k,i)=>k=='b'?C().ch[i].b:C().ch[i].ex;
+function mv(k,i,j,d){const a=arr(k,i);if(j+d<0||j+d>=a.length)return;[a[j],a[j+d]]=[a[j+d],a[j]];R()}
+function rm(k,i,j){if(confirm('Supprimer cet élément ?')){arr(k,i).splice(j,1);R()}}
+function ab(i,t){if(t){C().ch[i].b.push({t,x:'Texte à modifier'});R()}}
+function ae(i,l){if(l){C().ch[i].ex.push({l:+l,t:"Titre de l'exercice",q:'Énoncé…',a:'Corrigé détaillé…'});R()}}
+function ach(){C().ch.push({title:'Nouveau chapitre',b:[],ex:[]});R()}
+function ge(i){S.tab='e';R();$('#ch'+i).scrollIntoView()}
+function nc(){const u=+prompt("Numéro de l'UE (1 à 13) ?"),t=prompt('Titre du cours ?');if(u&&t){D.courses.push({ue:u,title:t,ch:[{title:'Chapitre 1',b:[],ex:[]}]});R()}}
+async function sv(){try{localStorage.setItem('dcg',JSON.stringify(D))}catch(e){}
+if(!API)return alert("Enregistré dans ce navigateur. Pour sauvegarder sur Drive, renseigne API en haut du fichier index.html.");
+const pw=prompt("Code d'accès :");try{const r=await(await fetch(API,{method:'POST',body:JSON.stringify({pw,data:D})})).json();alert(r.ok?'Enregistré sur Drive ✓':'Code refusé')}catch(e){alert("Échec de l'enregistrement. Vérifie l'URL Apps Script.")}}
+(async()=>{try{if(API){const j=await(await fetch(API)).json();if(j.courses)D=j}else{const l=localStorage.getItem('dcg');if(l)D=JSON.parse(l)}}catch(e){}R()})();
+</script></body></html>
