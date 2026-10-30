@@ -32,9 +32,9 @@ button:focus-visible,.cd:focus-visible,.tab:focus-visible{outline:2px solid #3F7
 .ed [contenteditable=true]{outline:1px dashed #B9AD86;border-radius:3px;min-height:1.4em}
 .tb{display:none;gap:4px;float:right}.ed .tb{display:flex}
 @media print{.noprint,.tb,.go,button,select{display:none!important}body{background:#fff}.paper{border:0;padding:0}}
-</style></head><body><div id="app"></div>
+</style><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body><div id="app"></div><input type="file" id="fp" accept="application/pdf" hidden onchange="ip(this)"><input type="file" id="fj" accept=".json" hidden onchange="ij(this)">
 <script>
-const API="https://script.google.com/macros/s/AKfycbxuQkvKmn0CsOJ37OERKH0XgA3s2lOmVLBYPc8jfGHUReEsjtLl5uj71Q7IECDR7MBa/exec"; // colle ici l'URL de ton application web Apps Script
+const API="https://script.google.com/macros/s/AKfycbx2cALVyZJlJVhkxJhjSqQQYOOdxROYIXxMCRHKYXBOCqTiuuTD3Vmiar4b6P6PnERx/exec"; // colle ici l'URL de ton application web Apps Script
 const IC={1:'gavel',2:'scale',3:'users',4:'receipt-tax',5:'building-bank',6:'coin',7:'briefcase',8:'device-desktop',9:'calculator',10:'report-money',11:'chart-line',12:'language',13:'messages'};
 const COL=[['#6BA8E8','#DCEEFF','#0E3A5E'],['#7CC24A','#E6F4D3','#2B4A12'],['#F28C4B','#FFE6D1','#5E2D0A'],['#C77DDB','#F3E1F9','#4A1B5E']];
 const BL={h:'Sous-titre',p:'Paragraphe',ess:"L'essentiel en 30 secondes",for:'Formule',ret:'À retenir',att:'Attention'};
@@ -53,7 +53,7 @@ const ce=(k,i,j,f)=>`contenteditable="${S.ed}" spellcheck="false" data-k="${k}" 
 const tb=(k,i,j)=>`<span class="tb noprint"><button onclick="mv('${k}',${i},${j},-1)" aria-label="Monter">↑</button><button onclick="mv('${k}',${i},${j},1)" aria-label="Descendre">↓</button><button onclick="rm('${k}',${i},${j})" aria-label="Supprimer">✕</button></span>`;
 const C=()=>D.courses[S.c];
 function R(){const a=$('#app');a.className='w'+(S.ed?' ed':'');a.innerHTML=S.c==null?lib():crs()}
-function lib(){return `<h1><span class="hl">Mes cours DCG</span></h1><div class="g">${D.courses.map((c,i)=>{const n=c.ch.reduce((s,x)=>s+x.ex.length,0);return `<div class="cd" tabindex="0" onclick="S.c=${i};S.tab='c';R()"><div class="tp" style="background:${COL[c.ue%4][0]}"></div>${ue(c)}<h3>${E(c.title)}</h3><div class="sn" style="font-size:12px;color:var(--mut)">${c.ch.length} chapitres · ${n} exercices</div></div>`}).join('')}<div class="cd sn" tabindex="0" style="text-align:center;border-style:dashed" onclick="nc()"><i class="ti ti-plus" style="font-size:24px"></i><div>Nouveau cours</div></div></div>`}
+function lib(){return `<h1><span class="hl">Mes cours DCG</span></h1><div class="bar noprint"><button onclick="$('#fp').click()"><i class="ti ti-file-import"></i> Importer un PDF</button><button onclick="$('#fj').click()"><i class="ti ti-braces"></i> Importer un JSON</button><button onclick="xj()"><i class="ti ti-download"></i> Exporter tout</button><span id="st" class="sn" style="font-size:13px"></span></div><div class="g">${D.courses.map((c,i)=>{const n=c.ch.reduce((s,x)=>s+x.ex.length,0);return `<div class="cd" tabindex="0" onclick="S.c=${i};S.tab='c';R()"><div class="tp" style="background:${COL[c.ue%4][0]}"></div>${ue(c)}<h3>${E(c.title)}</h3><div class="sn" style="font-size:12px;color:var(--mut)">${c.ch.length} chapitres · ${n} exercices</div></div>`}).join('')}<div class="cd sn" tabindex="0" style="text-align:center;border-style:dashed" onclick="nc()"><i class="ti ti-plus" style="font-size:24px"></i><div>Nouveau cours</div></div></div>`}
 function crs(){const c=C(),T=S.tab=='c';let h=`<div class="bar noprint"><button onclick="S.c=null;S.ed=false;R()"><i class="ti ti-arrow-left"></i> Retour</button>${ue(c)}<b class="sn" style="flex:1">${E(c.title)}</b><span class="tab ${T?'on':''}" tabindex="0" onclick="S.tab='c';R()">Cours</span><span class="tab ${T?'':'on'}" tabindex="0" onclick="S.tab='e';R()">Exercices</span></div><div class="bar noprint"><button onclick="S.ed=!S.ed;R()"><i class="ti ti-edit"></i> ${S.ed?'Terminer':'Modifier'}</button><button onclick="sv()"><i class="ti ti-device-floppy"></i> Enregistrer</button><button onclick="print()"><i class="ti ti-download"></i> Télécharger en PDF</button>${S.ed?'<button onclick="ach()">+ Chapitre</button>':''}</div>`;
 c.ch.forEach((x,i)=>{h+=`<div class="paper" id="ch${i}"><h2><span class="sn" style="font-size:12px;color:var(--mut)">Chap. ${i+1}</span> <span class="hl" ${ce('ct',i)}>${E(x.title)}</span></h2>`;
 if(T){h+=x.b.map((b,j)=>`<div>${tb('b',i,j)}${b.t=='h'?`<h3 ${ce('b',i,j)}>${E(b.x)}</h3>`:b.t=='p'?`<div class="p" ${ce('b',i,j)}>${E(b.x)}</div>`:`<div class="bx ${b.t}" data-l="${BL[b.t]}" ${ce('b',i,j)}>${E(b.x)}</div>`}</div>`).join('');
@@ -74,5 +74,19 @@ function nc(){const u=+prompt("Numéro de l'UE (1 à 13) ?"),t=prompt('Titre du 
 async function sv(){try{localStorage.setItem('dcg',JSON.stringify(D))}catch(e){}
 if(!API)return alert("Enregistré dans ce navigateur. Pour sauvegarder sur Drive, renseigne API en haut du fichier index.html.");
 const pw=prompt("Code d'accès :");try{const r=await(await fetch(API,{method:'POST',body:JSON.stringify({pw,data:D})})).json();alert(r.ok?'Enregistré sur Drive ✓':'Code refusé')}catch(e){alert("Échec de l'enregistrement. Vérifie l'URL Apps Script.")}}
+const msg=t=>{const m=$('#st');if(m)m.textContent=t};
+async function ip(inp){const f=inp.files[0];inp.value='';if(!f)return;
+if(!API)return alert("Renseigne d'abord l'URL Apps Script (API) : la conversion passe par elle.");
+const u=+prompt("Numéro de l'UE de ce cours ?"),ti=prompt('Titre du cours ?'),pw=prompt("Code d'accès :");if(!u||!ti)return;
+try{pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+const pdf=await pdfjsLib.getDocument({data:await f.arrayBuffer()}).promise,txt=[],ch=[],N=6;
+for(let p=1;p<=pdf.numPages;p++){const c=await(await pdf.getPage(p)).getTextContent();txt.push(c.items.map(i=>i.str).join(' '))}
+for(let s=0;s<txt.length;s+=N){msg(`Conversion en cours… pages ${s+1} à ${Math.min(s+N,txt.length)} sur ${txt.length}`);
+const r=await(await fetch(API,{method:'POST',body:JSON.stringify({act:'convert',pw,text:txt.slice(s,s+N).join('\n\n'),prev:ch.length?ch[ch.length-1].title:''})})).json();
+if(!r.ok)throw new Error(r.err||'refusé');
+r.ch.forEach(x=>{const l=ch[ch.length-1];if(l&&l.title==x.title){l.b.push(...x.b);l.ex.push(...x.ex)}else ch.push(x)})}
+D.courses.push({ue:u,title:ti,ch});msg('');R()}catch(e){msg('');alert('Conversion impossible : '+e.message)}}
+function ij(inp){const f=inp.files[0];inp.value='';if(!f)return;f.text().then(s=>{const j=JSON.parse(s);(j.courses||[j]).forEach(c=>{const i=D.courses.findIndex(x=>x.ue==c.ue&&x.title==c.title);if(i<0)D.courses.push(c);else c.ch.forEach(h=>{const k=D.courses[i].ch.findIndex(y=>y.title==h.title);k<0?D.courses[i].ch.push(h):D.courses[i].ch[k]=h})});R()}).catch(()=>alert('Fichier JSON invalide'))}
+function xj(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='cours_dcg.json';a.click()}
 (async()=>{try{if(API){const j=await(await fetch(API)).json();if(j.courses)D=j}else{const l=localStorage.getItem('dcg');if(l)D=JSON.parse(l)}}catch(e){}R()})();
 </script></body></html>
