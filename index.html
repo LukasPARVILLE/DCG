@@ -31,8 +31,9 @@ button:focus-visible,.cd:focus-visible,.tab:focus-visible{outline:2px solid #3F7
 .cor{display:none;background:#F3F9EC;border-left:4px solid #7CC24A;padding:10px 12px;margin-top:8px;white-space:pre-wrap;font-size:15px}.cor.on{display:block}
 .ed [contenteditable=true]{outline:1px dashed #B9AD86;border-radius:3px;min-height:1.4em}
 .tb{display:none;gap:4px;float:right}.ed .tb{display:flex}
+#sync{position:fixed;bottom:8px;right:10px;font-size:12px;color:var(--mut);background:#fff;border:1px solid var(--bd);border-radius:6px;padding:3px 9px}#sync:empty{display:none}
 @media print{.noprint,.tb,.go,button,select{display:none!important}body{background:#fff}.paper{border:0;padding:0}}
-</style></head><body><div id="app"></div><input type="file" id="fj" accept=".json" hidden onchange="ij(this)">
+</style></head><body><div id="app"></div><div id="sync" class="sn noprint" role="status"></div><input type="file" id="fj" accept=".json" hidden onchange="ij(this)">
 <script>
 const API="https://script.google.com/macros/s/AKfycbx2cALVyZJlJVhkxJhjSqQQYOOdxROYIXxMCRHKYXBOCqTiuuTD3Vmiar4b6P6PnERx/exec"; // colle ici l'URL de ton application web Apps Script
 const IC={1:'gavel',2:'scale',3:'users',4:'receipt-tax',5:'building-bank',6:'coin',7:'briefcase',8:'device-desktop',9:'calculator',10:'report-money',11:'chart-line',12:'language',13:'messages'};
@@ -62,20 +63,42 @@ h+=`<div class="go noprint" tabindex="0" onclick="ge(${i})"><i class="ti ti-penc
 else{h+=x.ex.map((e,j)=>`<div class="ex">${tb('e',i,j)}<span class="lv l${e.l}">Niveau ${e.l} · ${LV[e.l-1]}</span> <b class="sn" ${ce('e',i,j,'t')}>${E(e.t)}</b><div class="p" ${ce('e',i,j,'q')}>${E(e.q)}</div><button class="noprint" style="margin-top:8px" onclick="this.nextElementSibling.classList.toggle('on')">Voir le corrigé</button><div class="cor" ${ce('e',i,j,'a')}>${E(e.a)}</div></div>`).join('');
 if(S.ed)h+=`<select class="noprint" onchange="ae(${i},this.value)"><option value="">+ Ajouter un exercice…</option>${LV.map((v,k)=>`<option value="${k+1}">Niveau ${k+1} · ${v}</option>`).join('')}</select>`}
 h+='</div>'});return h}
-document.addEventListener('input',e=>{const d=e.target.dataset;if(!d.k)return;const v=e.target.innerText,x=C().ch[d.i];if(d.k=='ct')x.title=v;else if(d.k=='b')x.b[d.j].x=v;else if(d.k=='e')x.ex[d.j][d.f]=v});
+document.addEventListener('input',e=>{const d=e.target.dataset;if(!d.k)return;const v=e.target.innerText,x=C().ch[d.i];if(d.k=='ct')x.title=v;else if(d.k=='b')x.b[d.j].x=v;else if(d.k=='e')x.ex[d.j][d.f]=v;touch()});
 const arr=(k,i)=>k=='b'?C().ch[i].b:C().ch[i].ex;
-function mv(k,i,j,d){const a=arr(k,i);if(j+d<0||j+d>=a.length)return;[a[j],a[j+d]]=[a[j+d],a[j]];R()}
-function rm(k,i,j){if(confirm('Supprimer cet élément ?')){arr(k,i).splice(j,1);R()}}
-function ab(i,t){if(t){C().ch[i].b.push({t,x:'Texte à modifier'});R()}}
-function ae(i,l){if(l){C().ch[i].ex.push({l:+l,t:"Titre de l'exercice",q:'Énoncé…',a:'Corrigé détaillé…'});R()}}
-function ach(){C().ch.push({title:'Nouveau chapitre',b:[],ex:[]});R()}
+function mv(k,i,j,d){const a=arr(k,i);if(j+d<0||j+d>=a.length)return;[a[j],a[j+d]]=[a[j+d],a[j]];R();touch()}
+function rm(k,i,j){if(confirm('Supprimer cet élément ?')){arr(k,i).splice(j,1);R();touch()}}
+function ab(i,t){if(t){C().ch[i].b.push({t,x:'Texte à modifier'});R();touch()}}
+function ae(i,l){if(l){C().ch[i].ex.push({l:+l,t:"Titre de l'exercice",q:'Énoncé…',a:'Corrigé détaillé…'});R();touch()}}
+function ach(){C().ch.push({title:'Nouveau chapitre',b:[],ex:[]});R();touch()}
 function ge(i){S.tab='e';R();$('#ch'+i).scrollIntoView()}
-function nc(){const u=+prompt("Numéro de l'UE (1 à 13) ?"),t=prompt('Titre du cours ?');if(u&&t){D.courses.push({ue:u,title:t,ch:[{title:'Chapitre 1',b:[],ex:[]}]});R()}}
-async function sv(){try{localStorage.setItem('dcg',JSON.stringify(D))}catch(e){}
-if(!API)return alert("Enregistré dans ce navigateur. Pour sauvegarder sur Drive, renseigne API en haut du fichier index.html.");
-const pw=prompt("Code d'accès :");try{const r=await(await fetch(API,{method:'POST',body:JSON.stringify({pw,data:D})})).json();alert(r.ok?'Enregistré sur Drive ✓':'Code refusé')}catch(e){alert("Échec de l'enregistrement. Vérifie l'URL Apps Script.")}}
+function nc(){const u=+prompt("Numéro de l'UE (1 à 13) ?"),t=prompt('Titre du cours ?');if(u&&t){D.courses.push({ue:u,title:t,ch:[{title:'Chapitre 1',b:[],ex:[]}]});R();touch()}}
+let T,loaded=!API;
+const sy=t=>{const e=$('#sync');if(e)e.textContent=t};
+const hm=()=>new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+function touch(){try{localStorage.setItem('dcg',JSON.stringify(D));localStorage.setItem('dcg_dirty','1')}catch(e){}
+clearTimeout(T);sy('Modifications en attente…');T=setTimeout(push,1500)}
+async function push(){if(!API){sy('Enregistré sur cet appareil '+hm());return}
+if(!loaded){sy('Synchronisation impossible : lecture de Drive en échec');return}
+let pw=localStorage.getItem('dcg_pw');
+if(!pw){pw=prompt("Code d'accès (demandé une seule fois sur cet appareil) :");if(!pw){sy('Non synchronisé : code manquant');return}localStorage.setItem('dcg_pw',pw)}
+sy('Enregistrement…');
+try{const r=await(await fetch(API,{method:'POST',body:JSON.stringify({pw,data:D})})).json();
+if(r.ok){localStorage.removeItem('dcg_dirty');sy('Enregistré sur Drive ✓ '+hm())}
+else{localStorage.removeItem('dcg_pw');sy('Code refusé : il sera redemandé')}}
+catch(e){sy('Hors ligne : nouvel essai dès le retour du réseau')}}
+const sv=()=>{try{localStorage.setItem('dcg_dirty','1')}catch(e){}push()};
+async function refresh(){try{const j=await(await fetch(API)).json();if(j.courses&&JSON.stringify(j)!=JSON.stringify(D)){D=j;try{localStorage.setItem('dcg',JSON.stringify(D))}catch(e){}if(S.c!=null&&!D.courses[S.c])S.c=null;R();sy('Mis à jour depuis Drive '+hm())}}catch(e){}}
+addEventListener('online',()=>{if(localStorage.getItem('dcg_dirty')=='1')push()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&API&&loaded&&!S.ed&&localStorage.getItem('dcg_dirty')!='1')refresh()});
 const msg=t=>{const m=$('#st');if(m)m.textContent=t};
-function ij(inp){const f=inp.files[0];inp.value='';if(!f)return;f.text().then(s=>{const j=JSON.parse(s);(j.courses||[j]).forEach(c=>{const i=D.courses.findIndex(x=>x.ue==c.ue&&x.title==c.title);if(i<0)D.courses.push(c);else c.ch.forEach(h=>{const k=D.courses[i].ch.findIndex(y=>y.title==h.title);k<0?D.courses[i].ch.push(h):D.courses[i].ch[k]=h})});D.courses.forEach(c=>c.ch.sort((x,y)=>(x.n||99)-(y.n||99)));R()}).catch(()=>alert('Fichier JSON invalide'))}
+function ij(inp){const f=inp.files[0];inp.value='';if(!f)return;f.text().then(s=>{const j=JSON.parse(s);(j.courses||[j]).forEach(c=>{const i=D.courses.findIndex(x=>x.ue==c.ue&&x.title==c.title);if(i<0)D.courses.push(c);else c.ch.forEach(h=>{const k=D.courses[i].ch.findIndex(y=>y.title==h.title);k<0?D.courses[i].ch.push(h):D.courses[i].ch[k]=h})});D.courses.forEach(c=>c.ch.sort((x,y)=>(x.n||99)-(y.n||99)));R();touch()}).catch(()=>alert('Fichier JSON invalide'))}
 function xj(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(D,null,1)],{type:'application/json'}));a.download='cours_dcg.json';a.click()}
-(async()=>{try{if(API){const j=await(await fetch(API)).json();if(j.courses)D=j}else{const l=localStorage.getItem('dcg');if(l)D=JSON.parse(l)}}catch(e){}R()})();
+(async()=>{let local=null;try{const l=localStorage.getItem('dcg');if(l)local=JSON.parse(l)}catch(e){}
+const dirty=localStorage.getItem('dcg_dirty')=='1';
+if(API){try{const j=await(await fetch(API)).json();loaded=true;
+if(dirty&&local)D=local;else if(j.courses)D=j;else if(local)D=local;
+if(dirty)push();else sy('Synchronisé avec Drive '+hm())}
+catch(e){if(local)D=local;sy('Hors ligne : données de cet appareil')}}
+else if(local)D=local;
+R()})();
 </script></body></html>
